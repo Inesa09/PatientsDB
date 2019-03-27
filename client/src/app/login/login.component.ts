@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
- 
-import { AuthService } from '../auth/auth.service';
-import { TokenStorageService } from '../auth/token-storage.service';
-import { AuthLoginInfo } from '../auth/login-info';
+import {Component, OnInit} from '@angular/core';
+
+import {AuthService} from '../auth/auth.service';
+import {TokenStorageService} from '../auth/token-storage.service';
+import {AuthLoginInfo} from '../auth/login-info';
+import {ROLES} from "../roles/mock-roles";
 
 @Component({
   selector: 'app-login',
@@ -16,21 +17,22 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
   private loginInfo: AuthLoginInfo;
- 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
- 
+
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) {
+  }
+
   ngOnInit() {
 
   }
- 
+
   onSubmit() {
     console.log(this.loginForm);
- 
+
     this.loginInfo = new AuthLoginInfo(
       this.loginForm.username,
       this.loginForm.password);
- 
-this.authService.attemptAuth(this.loginInfo).subscribe(
+
+    this.authService.attemptAuth(this.loginInfo).subscribe(
       data => {
         console.log(data);
         console.log(data.token);
@@ -42,27 +44,21 @@ this.authService.attemptAuth(this.loginInfo).subscribe(
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
         this.roles.every(role => {
-          if (role === 'ROLE_CAR_OWNER') {
-          window.location.href='/ui/cars'
-          return false;
-        } else if (role === 'ROLE_SALES_MANAGER') {
-          window.location.href='/ui/home';
-          return false;
-        } else if (role === 'ROLE_TECHNICAL_MANAGER') {
-          window.location.href='/ui/home';
-          return false;
-        } else if (role === 'ROLE_DIELER') {
-          window.location.href='/ui/home';
-          return false;
-        } else if (role === 'ROLE_ADMIN') {
-          window.location.href='/ui/home';
-          return false;
-        } else if (role === 'ROLE_WORKER') {
-          window.location.href='/ui/home';
-          return false;
-        }
-       })   
-        },
+          if (role === ROLES[0].name) {
+            window.location.href = '/ui/home';
+            return false;
+          } else if (role === ROLES[1].name) {
+            window.location.href = '/ui/home';
+            return false;
+          } else if (role === ROLES[2].name) {
+            window.location.href = '/ui/home';
+            return false;
+          } else if (role === ROLES[3].name) {
+            window.location.href = '/ui/home';
+            return false;
+          }
+        })
+      },
       error => {
         console.log(error);
         this.errorMessage = error.error.message;
@@ -70,9 +66,9 @@ this.authService.attemptAuth(this.loginInfo).subscribe(
       }
     );
   }
- 
+
   reloadPage() {
-    window.location.href='/ui/home';
+    window.location.href = '/ui/home';
   }
 
 }

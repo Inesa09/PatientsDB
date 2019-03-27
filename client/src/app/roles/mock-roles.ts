@@ -1,9 +1,8 @@
 import {Role} from './role';
 
 export const ROLES: Role[] = [
-  {name: 'ROLE_CAR_OWNER'},
-  {name: 'ROLE_SALES_MANAGER'},
-  {name: 'ROLE_TECHNICAL_MANAGER'},
-  {name: 'ROLE_DIELER'},
-  {name: 'ROLE_WORKER'}
+  {name: 'ROLE_DOCTOR'},
+  {name: 'ROLE_CENTER_DOCTOR'},
+  {name: 'ROLE_REGION_DOCTOR'},
+  {name: 'ROLE_COUNTRY_DOCTOR'}
 ];
