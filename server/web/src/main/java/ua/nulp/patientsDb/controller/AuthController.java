@@ -44,13 +44,14 @@ public class AuthController {
 
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
         UserDetails userDetail = (UserDetails) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetail.getUsername(), userDetail.getAuthorities()));
+        JwtResponse jwt2 = new JwtResponse(jwt, userDetail.getUsername(), userDetail.getAuthorities());
+        return new ResponseEntity<>(jwt2, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
